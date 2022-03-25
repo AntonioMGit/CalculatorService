@@ -1,12 +1,13 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace ModelContainer
 {
 	public class Div
 	{
 		[JsonPropertyName("Dividend")]
-		public float Dividend { get; set; }
+		public float? Dividend { get; set; }
 		[JsonPropertyName("Divisor")]
-		public float Divisor { get; set; }
+		public float? Divisor { get; set; }
 	}
 }

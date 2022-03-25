@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ModelContainer;
 using Microsoft.Extensions.Primitives;
+using Newtonsoft.Json;
 
 namespace CalculatorServer.Controllers
 {
@@ -27,55 +28,70 @@ namespace CalculatorServer.Controllers
 		}
 
 		[HttpPost]
-		public Multiplicacion Funcion([FromBody] Mult cosa)
+		public async Task<IActionResult> Funcion([FromBody] Mult cosa)
 		{
+			ObjectResult resp;
 
-			var re = Request;
-			var headers = re.Headers;
-			StringValues keyValues;
-			String key = "";
-			if (headers.ContainsKey("X-Evi-Tracking-Id"))
+			if (cosa.Factors != null)
 			{
-				headers.TryGetValue("X-Evi-Tracking-Id", out keyValues);
-				key = keyValues.First();
-			}
+				var re = Request;
+				var headers = re.Headers;
+				StringValues keyValues;
+				String key = "";
+				if (headers.ContainsKey("X-Evi-Tracking-Id"))
+				{
+					headers.TryGetValue("X-Evi-Tracking-Id", out keyValues);
+					key = keyValues.First();
+				}
 
-			List<float> lista = cosa.Factors;
-			Multiplicacion mult = new Multiplicacion();
-			mult.Product = lista[0];
-
-			for (int i = 1; i < lista.Count; i++)
-			{
-				mult.Product *= lista[i];
-			}
-
-			if (!key.Equals(""))
-			{
-				string operation = "Mult";
-				string calculation = "";
-				string date = "";
-
-				calculation = lista[0].ToString() + " ";
+				List<float> lista = cosa.Factors;
+				Multiplicacion mult = new Multiplicacion();
+				mult.Product = lista[0];
 
 				for (int i = 1; i < lista.Count; i++)
 				{
-					calculation += " * " + lista[i];
+					mult.Product *= lista[i];
 				}
 
-				calculation += " = " + mult.Product.ToString();
+				if (!key.Equals(""))
+				{
+					string operation = "Mult";
+					string calculation = "";
+					string date = "";
 
-				Operation op = new Operation();
+					calculation = lista[0].ToString() + " ";
 
-				op.OperationStr = operation;
-				op.Calculation = calculation;
-				op.Date = date;
+					for (int i = 1; i < lista.Count; i++)
+					{
+						calculation += " * " + lista[i];
+					}
 
-				SaveData.Add(key, op);
+					calculation += " = " + mult.Product.ToString();
 
-				Console.WriteLine(key + " " + SaveData.GetOperationsByKey(key).OperationList[0].Calculation);
+					Operation op = new Operation();
+
+					op.OperationStr = operation;
+					op.Calculation = calculation;
+					op.Date = date;
+
+					SaveData.Add(key, op);
+
+					Console.WriteLine(key + " " + SaveData.GetOperationsByKey(key).OperationList[0].Calculation);
+				}
+				resp = Ok(mult);
+			}
+			else
+			{
+				Error error = new Error();
+				error.ErrorCode = "Bad request";
+				error.ErrorStatus = 400;
+				error.ErrorMessage = "Datos incorrectos";
+
+				var myContent = JsonConvert.SerializeObject(error);
+				resp = BadRequest(myContent);
 			}
 
-			return mult;
+			return resp;
 		}
 
 	}

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ModelContainer;
 using Microsoft.Extensions.Primitives;
+using Newtonsoft.Json;
 
 namespace CalculatorServer.Controllers
 {
@@ -27,49 +28,71 @@ namespace CalculatorServer.Controllers
 		}
 
 		[HttpPost]
-		public Raiz Funcion([FromBody] Sqrt cosa)
+		public async Task<IActionResult> Funcion([FromBody] Sqrt cosa)
 		{
-			var re = Request;
-			var headers = re.Headers;
-			StringValues keyValues;
-			String key = "";
-			if (headers.ContainsKey("X-Evi-Tracking-Id"))
-			{
-				headers.TryGetValue("X-Evi-Tracking-Id", out keyValues);
-				key = keyValues.First();
-			}
+			ObjectResult resp;
 
-			Raiz sqrt = new Raiz();
-
-			if (cosa.Number > 0)
+			if (cosa.Number.HasValue)
 			{
-				sqrt.Square = (float)Math.Sqrt(cosa.Number);
+				var re = Request;
+				var headers = re.Headers;
+				StringValues keyValues;
+				String key = "";
+				if (headers.ContainsKey("X-Evi-Tracking-Id"))
+				{
+					headers.TryGetValue("X-Evi-Tracking-Id", out keyValues);
+					key = keyValues.First();
+				}
+
+				Raiz sqrt = new Raiz();
+
+				if (cosa.Number > 0)
+				{
+					sqrt.Square = (float)Math.Sqrt(cosa.Number.Value);
+
+					resp = Ok(sqrt);
+				}
+				else
+				{
+					Error error = new Error();
+					error.ErrorCode = "Bad request";
+					error.ErrorStatus = 400;
+					error.ErrorMessage = "Square root of number < 0";
+
+					resp = BadRequest(error);
+				}
+
+				if (!key.Equals(""))
+				{
+					string operation = "Sqrt";
+					string calculation = "";
+					string date = "";
+
+					calculation = "Square root of: " + cosa.Number + " = " + sqrt.Square;
+
+					Operation op = new Operation();
+
+					op.OperationStr = operation;
+					op.Calculation = calculation;
+					op.Date = date;
+
+					SaveData.Add(key, op);
+
+					Console.WriteLine(key + " " + SaveData.GetOperationsByKey(key).OperationList[0].Calculation);
+				}
 			}
 			else
 			{
+				Error error = new Error();
+				error.ErrorCode = "Bad request";
+				error.ErrorStatus = 400;
+				error.ErrorMessage = "Datos incorrectos";
 
+				var myContent = JsonConvert.SerializeObject(error);
+				resp = BadRequest(myContent);
 			}
 
-			if (!key.Equals(""))
-			{
-				string operation = "Sqrt";
-				string calculation = "";
-				string date = "";
-
-				calculation = "Square root of: " + cosa.Number + " = " + sqrt.Square;
-
-				Operation op = new Operation();
-
-				op.OperationStr = operation;
-				op.Calculation = calculation;
-				op.Date = date;
-
-				SaveData.Add(key, op);
-
-				Console.WriteLine(key + " " + SaveData.GetOperationsByKey(key).OperationList[0].Calculation);
-			}
-
-			return sqrt;
+			return resp;
 		}
 
 	}

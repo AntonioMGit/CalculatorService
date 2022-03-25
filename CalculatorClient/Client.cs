@@ -33,15 +33,16 @@ namespace CalculatorClient
 
 			do
 			{
-				Console.WriteLine("Operation:");
-				Console.WriteLine("\t1.Addition");
-				Console.WriteLine("\t2.Subtraction");
-				Console.WriteLine("\t3.Multiply");
-				Console.WriteLine("\t4.Division");
-				Console.WriteLine("\t5.Square root");
-				Console.WriteLine("\t6.Review history");
-				Console.WriteLine("\t7.Change user");
-				Console.WriteLine("\t0.Exit");
+				Console.WriteLine(@"Operation:
+					1.Addition
+					2.Subtraction
+					3.Multiply
+					4.Division
+					5.Square root
+					6.Review history
+					7.Change user
+					0.Exit
+				");
 
 				String valor = Console.ReadLine();
 

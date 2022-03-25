@@ -13,6 +13,7 @@ namespace CalculatorServer
 
 		public static void Add(string key, Operation operation)
 		{
+			//mirar que no sea null
 			if (Data.ContainsKey(key)) //si existe añade
 			{
 				List<Operation> o = Data[key].OperationList;
@@ -30,6 +31,7 @@ namespace CalculatorServer
 		}
 		public static Operations GetOperationsByKey(string key)
 		{
+			//mirar que no sea null
 			Operations oper = new Operations();
 			oper.OperationList = new List<Operation>();
 			if (Data.ContainsKey(key))//si existe añade

@@ -8,6 +8,6 @@ namespace ModelContainer
 	public class Sqrt
 	{
 		[JsonPropertyName("Number")]
-		public float Number { get; set; }
+		public float? Number { get; set; }
 	}
 }
