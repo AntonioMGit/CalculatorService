@@ -22,13 +22,13 @@ namespace CalculatorServer.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Funcion([FromBody] Sub cosa)
+		public async Task<IActionResult> Funcion([FromBody] SubRequest values)
 		{
 			_logger.LogInformation("Processing sub");
 
 			ObjectResult resp;
 
-			if (cosa.Minuend.HasValue && cosa.Minuend.HasValue)
+			if (values.Minuend.HasValue && values.Minuend.HasValue)
 			{
 
 				var re = Request;
@@ -41,21 +41,21 @@ namespace CalculatorServer.Controllers
 					key = keyValues.First();
 				}
 
-				float minuend = cosa.Minuend.Value;
-				float subtrahend = cosa.Subtrahend.Value;
-				Resta resta = new Resta();
+				float minuend = values.Minuend.Value;
+				float subtrahend = values.Subtrahend.Value;
+				SubResponse sub = new SubResponse();
 
-				resta.Difference = minuend - subtrahend;
+				sub.Difference = minuend - subtrahend;
 
 				if (!key.Equals(""))
 				{
-					_logger.LogInformation("Processing sub - X-Evi-Tracking-Id: " + key);
+					_logger.LogInformation($"Processing sub - X-Evi-Tracking-Id: {key}");
 
 					string operation = "Sub";
 					string calculation = "";
 					string date = DateTime.Now.ToString();
 
-					calculation = cosa.Minuend + " - " + cosa.Subtrahend + " = " + resta.Difference;
+					calculation = values.Minuend + " - " + values.Subtrahend + " = " + sub.Difference;
 
 					Operation op = new Operation();
 
@@ -69,7 +69,7 @@ namespace CalculatorServer.Controllers
 
 					_logger.LogInformation("Processing sub - Operation save in history");
 				}
-				resp = Ok(resta);
+				resp = Ok(sub);
 
 				_logger.LogInformation("Processing sub - DONE");
 			}

@@ -22,13 +22,13 @@ namespace CalculatorServer.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Funcion([FromBody] Mult cosa)
+		public async Task<IActionResult> Funcion([FromBody] MultRequest values)
 		{
 			_logger.LogInformation("Processing mult");
 
 			ObjectResult resp;
 
-			if (cosa.Factors != null)
+			if (values.Factors != null)
 			{
 				var re = Request;
 				var headers = re.Headers;
@@ -40,28 +40,28 @@ namespace CalculatorServer.Controllers
 					key = keyValues.First();
 				}
 
-				List<float> lista = cosa.Factors;
-				Multiplicacion mult = new Multiplicacion();
-				mult.Product = lista[0];
+				List<float> list = values.Factors;
+				MultResponse mult = new MultResponse();
+				mult.Product = list[0];
 
-				for (int i = 1; i < lista.Count; i++)
+				for (int i = 1; i < list.Count; i++)
 				{
-					mult.Product *= lista[i];
+					mult.Product *= list[i];
 				}
 
 				if (!key.Equals(""))
 				{
-					_logger.LogInformation("Processing mult - X-Evi-Tracking-Id: " + key);
+					_logger.LogInformation($"Processing mult - X-Evi-Tracking-Id: {key}");
 
 					string operation = "Mult";
 					string calculation = "";
 					string date = DateTime.Now.ToString();
 
-					calculation = lista[0].ToString();
+					calculation = list[0].ToString();
 
-					for (int i = 1; i < lista.Count; i++)
+					for (int i = 1; i < list.Count; i++)
 					{
-						calculation += " * " + lista[i];
+						calculation += " * " + list[i];
 					}
 
 					calculation += " = " + mult.Product.ToString();

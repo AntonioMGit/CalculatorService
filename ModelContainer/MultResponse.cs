@@ -3,7 +3,7 @@
 
 namespace ModelContainer
 {
-	public class Multiplicacion
+	public class MultResponse
 	{
 		[JsonPropertyName("Product")]
 		public float Product { get; set; }

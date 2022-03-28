@@ -2,7 +2,7 @@
 
 namespace ModelContainer
 {
-	public class Add : IOperations
+	public class AddRequest : IOperations
 	{
 		public List<float> Addends { get; set; }
 	}

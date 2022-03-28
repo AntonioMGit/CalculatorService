@@ -21,10 +21,10 @@ namespace CalculatorServer.Controllers
 		}
 
 		[HttpPost]
-		public Operations Funcion([FromBody] Query cosa)
+		public Operations Funcion([FromBody] Query values)
 		{
 			Operations operations = new Operations();
-			operations = SaveData.GetOperationsByKey(cosa.Id);
+			operations = SaveData.GetOperationsByKey(values.Id);
 
 			return operations;
 		}

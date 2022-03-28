@@ -2,7 +2,7 @@
 
 namespace ModelContainer
 {
-	public class Mult : IOperations
+	public class MultRequest : IOperations
 	{
 		public List<float> Factors { get; set; }
 	}
