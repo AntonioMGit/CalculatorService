@@ -14,12 +14,6 @@ namespace CalculatorServer.Controllers
 	[Route("/sub")]
 	public class SubController : ControllerBase
 	{
-		/*
-		private static readonly string[] Summaries = new[]
-		{
-			"Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-		};
-		*/
 		private readonly ILogger<SubController> _logger;
 
 		public SubController(ILogger<SubController> logger)
@@ -30,6 +24,8 @@ namespace CalculatorServer.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Funcion([FromBody] Sub cosa)
 		{
+			_logger.LogInformation("Processing sub");
+
 			ObjectResult resp;
 
 			if (cosa.Minuend.HasValue && cosa.Minuend.HasValue)
@@ -53,9 +49,11 @@ namespace CalculatorServer.Controllers
 
 				if (!key.Equals(""))
 				{
+					_logger.LogInformation("Processing sub - X-Evi-Tracking-Id: " + key);
+
 					string operation = "Sub";
 					string calculation = "";
-					string date = "";
+					string date = DateTime.Now.ToString();
 
 					calculation = cosa.Minuend + " - " + cosa.Subtrahend + " = " + resta.Difference;
 
@@ -68,11 +66,17 @@ namespace CalculatorServer.Controllers
 					SaveData.Add(key, op);
 
 					Console.WriteLine(key + " " + SaveData.GetOperationsByKey(key).OperationList[0].Calculation);
+
+					_logger.LogInformation("Processing sub - Operation save in history");
 				}
 				resp = Ok(resta);
+
+				_logger.LogInformation("Processing sub - DONE");
 			}
 			else
 			{
+				_logger.LogInformation("Processing sub - DISRUPTED - Incorrect data");
+
 				Error error = new Error();
 				error.ErrorCode = "Bad request";
 				error.ErrorStatus = 400;

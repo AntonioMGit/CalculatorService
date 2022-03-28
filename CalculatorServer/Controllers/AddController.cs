@@ -16,12 +16,6 @@ namespace CalculatorServer.Controllers
 	[Route("/add")]
 	public class AddController : ControllerBase
 	{
-		/*
-		private static readonly string[] Summaries = new[]
-		{
-			"Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-		};
-		*/
 		private readonly ILogger<AddController> _logger;
 
 		public AddController(ILogger<AddController> logger)
@@ -33,6 +27,8 @@ namespace CalculatorServer.Controllers
 		public async Task<IActionResult> Funcion([FromBody] Add cosa)
 		{
 			ObjectResult resp;
+
+			_logger.LogInformation("Processing add");
 
 			if (cosa.Addends != null)
 			{
@@ -54,11 +50,13 @@ namespace CalculatorServer.Controllers
 
 				if (!key.Equals(""))
 				{
+					_logger.LogInformation("Processing add - X-Evi-Tracking-Id: " + key);
+
 					string operation = "Sum";
 					string calculation = "";
-					string date = "";
+					string date = DateTime.Now.ToString();
 
-					calculation = lista[0].ToString() + " ";
+					calculation = lista[0].ToString();
 
 					for (int i = 1; i < lista.Count; i++)
 					{
@@ -76,16 +74,22 @@ namespace CalculatorServer.Controllers
 					SaveData.Add(key, op);
 
 					Console.WriteLine(key + " " + SaveData.GetOperationsByKey(key).OperationList[0].Calculation);
+
+					_logger.LogInformation("Processing add - Operation save in history");
 				}
 
 				resp = Ok(suma);
+
+				_logger.LogInformation("Processing add - DONE");
 			}
 			else
 			{
+				_logger.LogInformation("Processing add - DISRUPTED - Incorrect data");
+
 				Error error = new Error();
 				error.ErrorCode = "Bad request";
 				error.ErrorStatus = 400;
-				error.ErrorMessage = "Datos incorrectos";
+				error.ErrorMessage = "Incorrect data";
 
 				var myContent = JsonConvert.SerializeObject(error);
 				resp = BadRequest(myContent);

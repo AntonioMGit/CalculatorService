@@ -13,12 +13,6 @@ namespace CalculatorServer.Controllers
 	[Route("/query")]
 	public class SaveDataController : ControllerBase
 	{
-		/*
-		private static readonly string[] Summaries = new[]
-		{
-			"Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-		};
-		*/
 		private readonly ILogger<SaveDataController> _logger;
 
 		public SaveDataController(ILogger<SaveDataController> logger)

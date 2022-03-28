@@ -14,12 +14,6 @@ namespace CalculatorServer.Controllers
 	[Route("/sqrt")]
 	public class SqrtController : ControllerBase
 	{
-		/*
-		private static readonly string[] Summaries = new[]
-		{
-			"Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-		};
-		*/
 		private readonly ILogger<SqrtController> _logger;
 
 		public SqrtController(ILogger<SqrtController> logger)
@@ -30,6 +24,8 @@ namespace CalculatorServer.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Funcion([FromBody] Sqrt cosa)
 		{
+			_logger.LogInformation("Processing sqrt");
+
 			ObjectResult resp;
 
 			if (cosa.Number.HasValue)
@@ -51,9 +47,13 @@ namespace CalculatorServer.Controllers
 					sqrt.Square = (float)Math.Sqrt(cosa.Number.Value);
 
 					resp = Ok(sqrt);
+
+					_logger.LogInformation("Processing sqrt - DONE");
 				}
 				else
 				{
+					_logger.LogInformation("Processing sqrt - DISRUPTED - Incorrect data: square root of number < 0");
+
 					Error error = new Error();
 					error.ErrorCode = "Bad request";
 					error.ErrorStatus = 400;
@@ -64,9 +64,11 @@ namespace CalculatorServer.Controllers
 
 				if (!key.Equals(""))
 				{
+					_logger.LogInformation("Processing sqrt - X-Evi-Tracking-Id: " + key);
+
 					string operation = "Sqrt";
 					string calculation = "";
-					string date = "";
+					string date = DateTime.Now.ToString();
 
 					calculation = "Square root of: " + cosa.Number + " = " + sqrt.Square;
 
@@ -79,10 +81,14 @@ namespace CalculatorServer.Controllers
 					SaveData.Add(key, op);
 
 					Console.WriteLine(key + " " + SaveData.GetOperationsByKey(key).OperationList[0].Calculation);
+
+					_logger.LogInformation("Processing mult - Operation save in history");
 				}
 			}
 			else
 			{
+				_logger.LogInformation("Processing sqrt - DISRUPTED - Incorrect data");
+
 				Error error = new Error();
 				error.ErrorCode = "Bad request";
 				error.ErrorStatus = 400;

@@ -14,12 +14,6 @@ namespace CalculatorServer.Controllers
 	[Route("/div")]
 	public class DivController : ControllerBase
 	{
-		/*
-		private static readonly string[] Summaries = new[]
-		{
-			"Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-		};
-		*/
 		private readonly ILogger<DivController> _logger;
 
 		public DivController(ILogger<DivController> logger)
@@ -32,6 +26,8 @@ namespace CalculatorServer.Controllers
 		{
 
 			ObjectResult resp;
+
+			_logger.LogInformation("Processing div");
 
 			if (cosa.Dividend.HasValue && cosa.Divisor.HasValue)
 			{
@@ -58,9 +54,12 @@ namespace CalculatorServer.Controllers
 
 					resp = Ok(div);
 
+					_logger.LogInformation("Processing div - DONE");
 				}
 				else
 				{
+					_logger.LogInformation("Processing div - DISRUPTED - Incorrect data: divisor = 0");
+
 					Error error = new Error();
 					error.ErrorCode = "Bad request";
 					error.ErrorStatus = 400;
@@ -72,9 +71,11 @@ namespace CalculatorServer.Controllers
 
 				if (!key.Equals(""))
 				{
+					_logger.LogInformation("Processing div - X-Evi-Tracking-Id: " + key);
+
 					string operation = "Div";
 					string calculation = "";
-					string date = "";
+					string date = DateTime.Now.ToString();
 
 					calculation = cosa.Dividend + " / " + cosa.Divisor + " = " + div.Quotient + " Remainder: " + div.Remainder;
 
@@ -87,11 +88,15 @@ namespace CalculatorServer.Controllers
 					SaveData.Add(key, op);
 
 					Console.WriteLine(key + " " + SaveData.GetOperationsByKey(key).OperationList[0].Calculation);
+
+					_logger.LogInformation("Processing div - Operation save in history");
 				}
 
 			}
 			else
 			{
+				_logger.LogInformation("Processing div - DISRUPTED - Incorrect data");
+
 				Error error = new Error();
 				error.ErrorCode = "Bad request";
 				error.ErrorStatus = 400;

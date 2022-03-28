@@ -14,12 +14,6 @@ namespace CalculatorServer.Controllers
 	[Route("/mult")]
 	public class MultController : ControllerBase
 	{
-		/*
-		private static readonly string[] Summaries = new[]
-		{
-			"Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-		};
-		*/
 		private readonly ILogger<MultController> _logger;
 
 		public MultController(ILogger<MultController> logger)
@@ -30,6 +24,8 @@ namespace CalculatorServer.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Funcion([FromBody] Mult cosa)
 		{
+			_logger.LogInformation("Processing mult");
+
 			ObjectResult resp;
 
 			if (cosa.Factors != null)
@@ -55,11 +51,13 @@ namespace CalculatorServer.Controllers
 
 				if (!key.Equals(""))
 				{
+					_logger.LogInformation("Processing mult - X-Evi-Tracking-Id: " + key);
+
 					string operation = "Mult";
 					string calculation = "";
-					string date = "";
+					string date = DateTime.Now.ToString();
 
-					calculation = lista[0].ToString() + " ";
+					calculation = lista[0].ToString();
 
 					for (int i = 1; i < lista.Count; i++)
 					{
@@ -77,11 +75,17 @@ namespace CalculatorServer.Controllers
 					SaveData.Add(key, op);
 
 					Console.WriteLine(key + " " + SaveData.GetOperationsByKey(key).OperationList[0].Calculation);
+
+					_logger.LogInformation("Processing mult - Operation save in history");
 				}
 				resp = Ok(mult);
+
+				_logger.LogInformation("Processing mult - DONE");
 			}
 			else
 			{
+				_logger.LogInformation("Processing mult - DISRUPTED - Incorrect data");
+
 				Error error = new Error();
 				error.ErrorCode = "Bad request";
 				error.ErrorStatus = 400;

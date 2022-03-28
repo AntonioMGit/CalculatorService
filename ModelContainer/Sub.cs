@@ -2,11 +2,11 @@
 
 namespace ModelContainer
 {
-	public class Sub
+	public class Sub : IOperations
 	{
 		[JsonPropertyName("Minuend")]
-		public float Minuend { get; set; }
+		public float? Minuend { get; set; }
 		[JsonPropertyName("Subtrahend")]
-		public float Subtrahend { get; set; }
+		public float? Subtrahend { get; set; }
 	}
 }
