@@ -12,6 +12,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalculatorClient", "Calcula
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelContainer", "ModelContainer\ModelContainer.csproj", "{7C1B1255-0AA4-4FC0-B1BB-C4359870E61B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculatorClient.Tests", "CalculatorClient.Tests\CalculatorClient.Tests.csproj", "{A3E3D15E-19F9-4C7B-A67B-CD6135369D19}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +32,10 @@ Global
 		{7C1B1255-0AA4-4FC0-B1BB-C4359870E61B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C1B1255-0AA4-4FC0-B1BB-C4359870E61B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C1B1255-0AA4-4FC0-B1BB-C4359870E61B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3E3D15E-19F9-4C7B-A67B-CD6135369D19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3E3D15E-19F9-4C7B-A67B-CD6135369D19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3E3D15E-19F9-4C7B-A67B-CD6135369D19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3E3D15E-19F9-4C7B-A67B-CD6135369D19}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

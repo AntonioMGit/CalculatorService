@@ -76,14 +76,14 @@ namespace CalculatorClient
 						case 4:
 							Console.WriteLine("Preparing Division operation");
 
-							DivOperation(idUser);
+							OperationDiv(idUser);
 
 							break;
 						//square root
 						case 5:
 							Console.WriteLine("Preparing Square root operation");
 
-							SqrtOperation(idUser);
+							OperationSqrt(idUser);
 
 							break;
 						//review history
@@ -108,7 +108,7 @@ namespace CalculatorClient
 			while (valorNum != 0);
 		}
 
-		public static string ChangeUser(string idUser)
+		internal static string ChangeUser(string idUser)
 		{
 			if (idUser != "")
 				Console.WriteLine("Old user id: " + idUser);
@@ -121,7 +121,7 @@ namespace CalculatorClient
 			return idUser;
 		}
 
-		public static void ReviewHistoy(string idUser)
+		internal static void ReviewHistoy(string idUser)
 		{
 			if (idUser != "")
 			{
@@ -138,7 +138,7 @@ namespace CalculatorClient
 			}
 		}
 
-		public static void DoOperation(IOperations operation, string idUser, string path)
+		internal static void DoOperation(IOperations operation, string idUser, string path)
 		{
 			using (var client = new HttpClient())
 			{
@@ -163,7 +163,13 @@ namespace CalculatorClient
 			}
 		}
 
-		public static void OperationAdd(string idUser)
+		//funcion para el test
+		private static float DoOperationTest(IOperations add, string idUser, string v)
+		{
+			return (9);
+		}
+
+		internal static void OperationAdd(string idUser)
 		{
 			var list = new List<float>();
 			string resp = "";
@@ -184,11 +190,16 @@ namespace CalculatorClient
 			AddRequest add = new AddRequest();
 
 			add.Addends = list;
-
-			DoOperation(add, idUser, "add");
+			//https://stackoverflow.com/questions/3167617/determine-if-code-is-running-as-part-of-a-unit-test
+			#if DEBUG
+			var respTest = DoOperationTest(add, idUser, "add");
+			Console.WriteLine(respTest.ToString());
+			#else
+			DoOperation(add, idUser,"add");
+			#endif
 		}
 
-		public static void OperationSub(string idUser)
+		internal static void OperationSub(string idUser)
 		{
 			SubRequest sub = new SubRequest();
 
@@ -196,10 +207,16 @@ namespace CalculatorClient
 
 			sub.Subtrahend = ReadFloat("Subtrahend: ");
 
+			#if DEBUG
+			var respTest = DoOperationTest(sub, idUser, "sub");
+			Console.WriteLine();
+			Console.WriteLine(respTest.ToString());
+			#else
 			DoOperation(sub, idUser, "sub");
+			#endif
 		}
 
-		public static void OperationMult(string idUser)
+		internal static void OperationMult(string idUser)
 		{
 			var list = new List<float>();
 			string resp = "";
@@ -220,10 +237,15 @@ namespace CalculatorClient
 
 			mult.Factors = list;
 
+			#if DEBUG
+			var respTest = DoOperationTest(mult, idUser, "mult");
+			Console.WriteLine(respTest.ToString());
+			#else
 			DoOperation(mult, idUser, "mult");
+			#endif
 		}
 
-		public static void DivOperation(string idUser)
+		internal static void OperationDiv(string idUser)
 		{
 			DivRequest div = new DivRequest();
 
@@ -231,20 +253,31 @@ namespace CalculatorClient
 
 			//que no sea 0
 			div.Divisor = ReadFloat("Divisor: ");
-
+			#if DEBUG
+			var respTest = DoOperationTest(div, idUser, "div");
+			Console.WriteLine();
+			Console.WriteLine(respTest.ToString());
+			#else
 			DoOperation(div, idUser, "div");
+			#endif
 		}
 
-		public static void SqrtOperation(string idUser)
+		internal static void OperationSqrt(string idUser)
 		{
 			//comprobar que el valor sea mayor a 0
 			SqrtRequest sqrt = new SqrtRequest();
 			sqrt.Number = ReadFloat("Number: ");
 
+			#if DEBUG
+			var respTest = DoOperationTest(sqrt, idUser, "sqrt");
+			Console.WriteLine();
+			Console.WriteLine(respTest.ToString());
+			#else
 			DoOperation(sqrt, idUser, "sqrt");
+			#endif
 		}
 
-		public static float ReadFloat(string message)
+		internal static float ReadFloat(string message)
 		{
 			float value;
 			string strValue = "";

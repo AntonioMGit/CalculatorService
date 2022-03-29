@@ -15,5 +15,11 @@
     <ProjectReference Include="..\CalculatorServer\CalculatorServer.csproj" />
     <ProjectReference Include="..\ModelContainer\ModelContainer.csproj" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>CalculatorClient.Tests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
 
 </Project>
