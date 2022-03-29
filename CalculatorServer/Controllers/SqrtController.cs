@@ -22,13 +22,13 @@ namespace CalculatorServer.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Funcion([FromBody] Sqrt cosa)
+		public async Task<IActionResult> Funcion([FromBody] SqrtRequest values)
 		{
 			_logger.LogInformation("Processing sqrt");
 
 			ObjectResult resp;
 
-			if (cosa.Number.HasValue)
+			if (values.Number.HasValue)
 			{
 				var re = Request;
 				var headers = re.Headers;
@@ -40,11 +40,11 @@ namespace CalculatorServer.Controllers
 					key = keyValues.First();
 				}
 
-				Raiz sqrt = new Raiz();
+				SqrtResponse sqrt = new SqrtResponse();
 
-				if (cosa.Number > 0)
+				if (values.Number > 0)
 				{
-					sqrt.Square = (float)Math.Sqrt(cosa.Number.Value);
+					sqrt.Square = (float)Math.Sqrt(values.Number.Value);
 
 					resp = Ok(sqrt);
 
@@ -64,13 +64,13 @@ namespace CalculatorServer.Controllers
 
 				if (!key.Equals(""))
 				{
-					_logger.LogInformation("Processing sqrt - X-Evi-Tracking-Id: " + key);
+					_logger.LogInformation($"Processing sqrt - X-Evi-Tracking-Id: {key}");
 
 					string operation = "Sqrt";
 					string calculation = "";
 					string date = DateTime.Now.ToString();
 
-					calculation = "Square root of: " + cosa.Number + " = " + sqrt.Square;
+					calculation = "Square root of: " + values.Number + " = " + sqrt.Square;
 
 					Operation op = new Operation();
 

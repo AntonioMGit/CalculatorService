@@ -2,7 +2,7 @@
 
 namespace ModelContainer
 {
-	public class Division
+	public class DivResponse
 	{
 		[JsonPropertyName("Quotient")]
 		public float Quotient { get; set; }

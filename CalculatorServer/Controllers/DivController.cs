@@ -22,14 +22,14 @@ namespace CalculatorServer.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Funcion([FromBody] Div cosa)
+		public async Task<IActionResult> Funcion([FromBody] DivRequest values)
 		{
 
 			ObjectResult resp;
 
 			_logger.LogInformation("Processing div");
 
-			if (cosa.Dividend.HasValue && cosa.Divisor.HasValue)
+			if (values.Dividend.HasValue && values.Divisor.HasValue)
 			{
 				var re = Request;
 				var headers = re.Headers;
@@ -41,10 +41,10 @@ namespace CalculatorServer.Controllers
 					key = keyValues.First();
 				}
 
-				float dividend = cosa.Dividend.Value;
-				float divisor = cosa.Divisor.Value;
+				float dividend = values.Dividend.Value;
+				float divisor = values.Divisor.Value;
 
-				Division div = new Division();
+				DivResponse div = new DivResponse();
 
 				if (divisor != 0)
 				{
@@ -71,13 +71,13 @@ namespace CalculatorServer.Controllers
 
 				if (!key.Equals(""))
 				{
-					_logger.LogInformation("Processing div - X-Evi-Tracking-Id: " + key);
+					_logger.LogInformation($"Processing div - X-Evi-Tracking-Id: {key}");
 
 					string operation = "Div";
 					string calculation = "";
 					string date = DateTime.Now.ToString();
 
-					calculation = cosa.Dividend + " / " + cosa.Divisor + " = " + div.Quotient + " Remainder: " + div.Remainder;
+					calculation = values.Dividend + " / " + values.Divisor + " = " + div.Quotient + " Remainder: " + div.Remainder;
 
 					Operation op = new Operation();
 

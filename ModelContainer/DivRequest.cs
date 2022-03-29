@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace ModelContainer
 {
-	public class Div : IOperations
+	public class DivRequest : IOperations
 	{
 		[JsonPropertyName("Dividend")]
 		public float? Dividend { get; set; }

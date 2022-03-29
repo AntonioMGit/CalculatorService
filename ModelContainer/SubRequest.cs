@@ -2,7 +2,7 @@
 
 namespace ModelContainer
 {
-	public class Sub : IOperations
+	public class SubRequest : IOperations
 	{
 		[JsonPropertyName("Minuend")]
 		public float? Minuend { get; set; }

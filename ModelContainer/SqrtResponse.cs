@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace ModelContainer
 {
-	public class Raiz
+	public class SqrtResponse
 	{
 		[JsonPropertyName("Square")]
 		public float Square { get; set; }

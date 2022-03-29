@@ -2,7 +2,7 @@
 
 namespace ModelContainer
 {
-	public class Resta
+	public class SubResponse
 	{
 		[JsonPropertyName("Difference")]
 		public float Difference { get; set; }

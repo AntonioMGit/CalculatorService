@@ -24,13 +24,13 @@ namespace CalculatorServer.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Funcion([FromBody] Add cosa)
+		public async Task<IActionResult> Funcion([FromBody] AddRequest values)
 		{
 			ObjectResult resp;
 
 			_logger.LogInformation("Processing add");
 
-			if (cosa.Addends != null)
+			if (values.Addends != null)
 			{
 				//https://stackoverflow.com/questions/21404734/how-to-add-and-get-header-values-in-webapi
 				var re = Request;
@@ -43,27 +43,27 @@ namespace CalculatorServer.Controllers
 					key = keyValues.First();
 				}
 
-				List<float> lista = cosa.Addends;
+				List<float> list = values.Addends;
 
-				Suma suma = new Suma();
-				suma.Sum = lista.Sum();
+				SumResponse sum = new SumResponse();
+				sum.Sum = list.Sum();
 
 				if (!key.Equals(""))
 				{
-					_logger.LogInformation("Processing add - X-Evi-Tracking-Id: " + key);
+					_logger.LogInformation($"Processing add - X-Evi-Tracking-Id: {key}");
 
 					string operation = "Sum";
 					string calculation = "";
 					string date = DateTime.Now.ToString();
 
-					calculation = lista[0].ToString();
+					calculation = list[0].ToString();
 
-					for (int i = 1; i < lista.Count; i++)
+					for (int i = 1; i < list.Count; i++)
 					{
-						calculation += " + " + lista[i];
+						calculation += " + " + list[i];
 					}
 
-					calculation += " = " + suma.Sum.ToString();
+					calculation += " = " + sum.Sum.ToString();
 
 					Operation op = new Operation();
 
@@ -78,7 +78,7 @@ namespace CalculatorServer.Controllers
 					_logger.LogInformation("Processing add - Operation save in history");
 				}
 
-				resp = Ok(suma);
+				resp = Ok(sum);
 
 				_logger.LogInformation("Processing add - DONE");
 			}

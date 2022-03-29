@@ -10,7 +10,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalculatorServer", "Calcula
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalculatorClient", "CalculatorClient\CalculatorClient.csproj", "{B670DD29-C3B8-477F-AB60-6724665ECB34}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelContainer", "ModelContainer\ModelContainer.csproj", "{7C1B1255-0AA4-4FC0-B1BB-C4359870E61B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelContainer", "ModelContainer\ModelContainer.csproj", "{7C1B1255-0AA4-4FC0-B1BB-C4359870E61B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

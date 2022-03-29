@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace ModelContainer
 {
-	public class Sqrt : IOperations
+	public class SqrtRequest : IOperations
 	{
 		[JsonPropertyName("Number")]
 		public float? Number { get; set; }

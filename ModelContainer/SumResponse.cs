@@ -5,7 +5,7 @@ using System.Web.Http;
 
 namespace ModelContainer
 {
-	public class Suma
+	public class SumResponse
 	{
 		[JsonPropertyName("Sum")]
 		public float Sum { get; set; }
